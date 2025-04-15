@@ -1,0 +1,37 @@
+<p-toast></p-toast>
+
+<p-menubar [model]="items">
+  <ng-template pTemplate="start">
+    <span class="text-xl font-bold">User Management</span>
+  </ng-template>
+  <ng-template pTemplate="end">
+    <div class="flex gap-2" style=" display: flex; justify-content: flex-end; ">
+      <div style="margin-right: 10px;" >
+        <p-button label="Add User" icon="pi pi-plus" (click)="navigateToAddUser()"></p-button>
+      </div>
+      <div style="margin-right: 10px;">
+        <p-button label="View User" icon="pi pi-eye" (click)="showViewUserDialog()"></p-button>
+      </div>
+      <div style="margin-right: 10px;">
+        <p-button label="Update User" icon="pi pi-pencil" (click)="showUpdateUserDialog()"></p-button>
+      </div>
+      <div style="margin-right: 10px;">
+        <p-button label="All Users" icon="pi pi-users" (click)="navigateToGetAllUsers()"></p-button>
+      </div>
+    </div>
+  </ng-template>
+</p-menubar>
+
+<p-dialog header="Enter User ID" [(visible)]="showUserDialog" [style]="{width: '450px'}" [modal]="true">
+  <div class="p-fluid">
+    <div class="p-field">
+      <label for="userId">User ID</label>
+      <input pInputText id="userId" [(ngModel)]="userId" placeholder="Enter User ID" />
+    </div>
+  </div>
+<ng-template pTemplate="footer">
+    <p-button label="Cancel" icon="pi pi-times" (click)="showUserDialog = false" class="p-button-text"></p-button>
+    <p-button label="View" icon="pi pi-eye" (click)="handleUserAction('view')" class="p-button-primary"></p-button>
+    <p-button label="Update" icon="pi pi-pencil" (click)="handleUserAction('update')" class="p-button-warning"></p-button>
+  </ng-template>
+</p-dialog>

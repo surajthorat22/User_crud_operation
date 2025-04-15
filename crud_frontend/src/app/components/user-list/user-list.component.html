@@ -1,0 +1,84 @@
+<div class="p-4" style="margin-top: 20px;">
+  <p-toast></p-toast>
+  <p-confirmDialog></p-confirmDialog>
+
+  <div class="flex justify-content-end mb-4" style="margin-right: 10px; text-align: end;">
+    <p-button label="Create New User" icon="pi pi-plus" styleClass="p-button-success" (onClick)="createNewUser()"></p-button>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <p-table [value]="users" [loading]="loading" [tableStyle]="{ 'min-width': '60rem' }"
+      styleClass="p-datatable-striped p-datatable-gridlines p-datatable-rounded" [rowHover]="true">
+      <ng-template pTemplate="header" >
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Phone Number</th>
+          <th>Date of Birth</th>
+          <th>Blood Group</th>
+          <th style="text-align: end;">Actions</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>
+            <div class="font-bold">
+              {{ user.name }} {{ user.middlename ? user.middlename : "" }}
+              {{ user.lastname }}
+            </div>
+          </td>
+          <td>{{ user.age }}</td>
+          <td>{{ user.phoneno }}</td>
+          <td>{{ user.dob | date : "mediumDate" }}</td>
+          <td>{{ user.bloodgroup }}</td>
+          <td style="text-align:end;">
+            <div class="flex gap-2">
+              <button pButton pRipple type="button" label="View" class="p-button-primary p-button-text" (click)="onView(user)"></button>
+              <button pButton pRipple type="button" label="Edit" class="p-button-success p-button-text" (click)="onEdit(user)"></button>
+              <button pButton pRipple type="button" label="Delete" class="p-button-danger p-button-text" (click)="confirmDelete(user, $event)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6" class="text-center p-4">
+            <div class="flex flex-column align-items-center">
+              <i class="pi pi-users text-6xl text-gray-300 mb-3"></i>
+              <span class="text-xl text-gray-500">No users found</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <div style="position:absolute; bottom: 0; right: 0;" class="paginator-container">
+    <p-paginator
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [rowsPerPageOptions]="[5, 10, 25]"
+      (onPageChange)="onPageChange($event)"
+      [first]="(currentPage - 1) * rows">
+    </p-paginator>
+  </div>
+</div>
+</div>
+
+<p-dialog
+  [(visible)]="showUserDialog"
+  [modal]="true"
+  [style]="{width: '70vw'}"
+  [draggable]="false"
+  [resizable]="false"
+  [header]="dialogMode === 'add' ? 'Create New User' : dialogMode === 'edit' ? 'Edit User' : 'View User'"
+  (onHide)="onDialogClose()">
+  <app-user-form
+    *ngIf="showUserDialog"
+    [mode]="dialogMode"
+    [user]="selectedUser"
+    (closeDialog)="onDialogClose()">
+  </app-user-form>
+</p-dialog>
+

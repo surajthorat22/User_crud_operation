@@ -1,0 +1,156 @@
+<div class="container p-4">
+  <p-toast [position]="'top-right'" [style]="{'margin-top': '80px'}"></p-toast>
+
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="user-form">
+    <div class="grid">
+      <!-- Basic Information -->
+      <div class="col-12 md:col-6">
+        <div class="card p-4">
+          <h2 class="text-xl font-semibold mb-4">Basic Information</h2>
+          <div class="grid">
+            <div class="col-12">
+              <div class="p-field mb-3">
+                <label for="name" class="block mb-2">First Name*</label>
+                <input pInputText id="name" formControlName="name" [disabled]="loading || mode === 'view'" class="w-full" />
+                <small class="p-error block mt-1" *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched">
+                  Name is required and must contain only letters
+                </small>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="p-field mb-3">
+                <label for="middlename" class="block mb-2">Middle Name</label>
+                <input pInputText id="middlename" formControlName="middlename" [disabled]="loading || mode === 'view'" class="w-full" />
+                <small class="p-error block mt-1" *ngIf="userForm.get('middlename')?.invalid && userForm.get('middlename')?.touched">
+                  Middle name must contain only letters
+                </small>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="p-field mb-3">
+                <label for="lastname" class="block mb-2">Last Name*</label>
+                <input pInputText id="lastname" formControlName="lastname" [disabled]="loading || mode === 'view'" class="w-full" />
+                <small class="p-error block mt-1" *ngIf="userForm.get('lastname')?.invalid && userForm.get('lastname')?.touched">
+                  Last name is required and must contain only letters
+                </small>
+              </div>
+            </div>
+
+            <div class="col-12 md:col-6">
+              <div class="p-field mb-3">
+                <label for="age" class="block mb-2">Age*</label>
+                <p-inputNumber id="age" formControlName="age" [min]="1" [max]="130" [disabled]="loading || mode === 'view'" class="w-full"></p-inputNumber>
+                <small class="p-error block mt-1" *ngIf="userForm.get('age')?.invalid && userForm.get('age')?.touched">
+                  Age must be between 1 and 130
+                </small>
+              </div>
+            </div>
+
+            <div class="col-12 md:col-6">
+              <div class="p-field mb-3">
+                <label for="phoneno" class="block mb-2">Phone Number*</label>
+                <input pInputText id="phoneno" formControlName="phoneno" [disabled]="loading || mode === 'view'" class="w-full" />
+                <small class="p-error block mt-1" *ngIf="userForm.get('phoneno')?.invalid && userForm.get('phoneno')?.touched">
+                  Phone number must be 10 digits starting with 6-9
+                </small>
+              </div>
+            </div>
+
+            <div class="col-12 md:col-6">
+              <div class="p-field mb-3">
+                <label for="bloodgroup" class="block mb-2">Blood Group*</label>
+                <p-dropdown id="bloodgroup" [options]="bloodGroups" formControlName="bloodgroup"
+                           placeholder="Select Blood Group" [disabled]="loading || mode === 'view'" class="w-full"></p-dropdown>
+                <small class="p-error block mt-1" *ngIf="userForm.get('bloodgroup')?.invalid && userForm.get('bloodgroup')?.touched">
+                  Blood group is required
+                </small>
+              </div>
+            </div>
+
+            <div class="col-12 md:col-6">
+              <div class="p-field mb-3">
+                <label for="dob" class="block mb-2">Date of Birth*</label>
+                <p-calendar id="dob" formControlName="dob" [showIcon]="true" dateFormat="dd/mm/yy"
+                           [maxDate]="maxDate" [showButtonBar]="true" [disabled]="loading || mode === 'view'" class="w-full"></p-calendar>
+                <small class="p-error block mt-1" *ngIf="userForm.get('dob')?.invalid && userForm.get('dob')?.touched">
+                  Date of birth is required
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address Information -->
+      <div class="col-12 md:col-6">
+        <div class="card p-4">
+          <h2 class="text-xl font-semibold mb-4">Address Information</h2>
+          <div formArrayName="address">
+            <div *ngFor="let address of addressArray.controls; let i = index" [formGroupName]="i" class="address-group mb-4">
+              <div class="grid">
+                <div class="col-12">
+                  <div class="p-field mb-3">
+                    <label [for]="'line1-' + i" class="block mb-2">Address Line 1*</label>
+                    <input pInputText [id]="'line1-' + i" formControlName="line1" [disabled]="loading || mode === 'view'" class="w-full" [ngClass]="{'p-inputtext-disabled': mode === 'view'}" />
+                    <small class="p-error block mt-1" *ngIf="address.get('line1')?.invalid && address.get('line1')?.touched">
+                      Address line 1 is required
+                    </small>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="p-field mb-3">
+                    <label [for]="'line2-' + i" class="block mb-2">Address Line 2*</label>
+                    <input pInputText [id]="'line2-' + i" formControlName="line2" [disabled]="loading || mode === 'view'" class="w-full" [ngClass]="{'p-inputtext-disabled': mode === 'view'}" />
+                    <small class="p-error block mt-1" *ngIf="address.get('line2')?.invalid && address.get('line2')?.touched">
+                      Address line 2 is required
+                    </small>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="p-field mb-3">
+                    <label [for]="'city-' + i" class="block mb-2">City*</label>
+                    <input pInputText [id]="'city-' + i" formControlName="city" [disabled]="loading || mode === 'view'" class="w-full" [ngClass]="{'p-inputtext-disabled': mode === 'view'}" />
+                    <small class="p-error block mt-1" *ngIf="address.get('city')?.invalid && address.get('city')?.touched">
+                      City is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12" *ngIf="mode !== 'view'">
+                  <div class="flex justify-content-end">
+                    <button pButton type="button" icon="pi pi-minus" class="p-button-rounded p-button-text"
+                            (click)="removeAddress(i)" [disabled]="loading || addressArray.length === 1"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-field mt-3" *ngIf="mode !== 'view'">
+            <button pButton type="button" label="Add Another Address" (click)="addAddress()" class="p-button-secondary w-full" [disabled]="loading"></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="col-12">
+        <div style="display: flex;" class="flex  justify-content-end gap-2 mt-4">
+          <div style="margin: 10px;">
+          <p-button type="button" label="Cancel" icon="pi pi-times" (click)="onCancel()" class="p-button-text"></p-button>
+          </div>
+
+          <div style="margin: 10px;">
+           <p-button type="submit"
+                    [label]="mode === 'edit' ? 'Update' : mode === 'add' ? 'Create' : 'Close'"
+                    [loading]="loading"
+                    styleClass="p-button-success"
+                    *ngIf="mode !== 'view'">
+          </p-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

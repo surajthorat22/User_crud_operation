@@ -1,0 +1,51 @@
+<div class="container p-4">
+  <p-toast></p-toast>
+
+  <div *ngIf="loading" class="flex justify-content-center">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+  </div>
+
+  <div *ngIf="!loading && user" class="user-detail">
+    <p-card [header]="user.name + ' ' + user.lastname" subheader="User Details">
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-center">
+          <p-avatar [label]="user.name[0] + user.lastname[0]" size="xlarge"
+                   [style]="{'background-color': '#4F46E5', 'color': '#ffffff', 'font-size': '2rem'}">
+          </p-avatar>
+        </div>
+      </ng-template>
+
+      <div class="grid">
+        <div class="col-12 md:col-6">
+          <h3>Basic Information</h3>
+          <p><strong>Name:</strong> {{ user.name }} {{ user.middlename ? user.middlename + ' ' : '' }}{{ user.lastname }}</p>
+          <p><strong>Age:</strong> {{ user.age }}</p>
+          <p><strong>Phone Number:</strong> {{ user.phoneno }}</p>
+          <p><strong>Blood Group:</strong>
+            <span class="blood-group-badge" [ngClass]="getBloodGroupClass(user.bloodgroup)">
+              {{ user.bloodgroup }}
+            </span>
+          </p>
+          <p><strong>Date of Birth:</strong> {{ user.dob | date:'mediumDate' }}</p>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <h3>Address Information</h3>
+          <div *ngFor="let addr of user.address; let i = index" class="mb-3">
+            <p><strong>Address {{ i + 1 }}:</strong></p>
+            <p>{{ addr.line1 }}</p>
+            <p>{{ addr.line2 }}</p>
+            <p>{{ addr.city }}</p>
+          </div>
+        </div>
+      </div>
+
+      <ng-template pTemplate="footer">
+        <div class="flex justify-content-end gap-2">
+          <button pButton label="Back" icon="pi pi-arrow-left" class="p-button-text" (click)="onBack()"></button>
+          <button pButton label="Edit" icon="pi pi-pencil" class="p-button-primary" (click)="onEdit()"></button>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</div>
